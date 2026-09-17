@@ -1,5 +1,6 @@
 import {useEffect, useMemo, useState} from 'react'
 import './App.css'
+import './affiliate.css'
 
 type Category = { categoryId: number; name: string; parentId: number }
 type Product = {
@@ -106,23 +107,21 @@ function App() {
     }
 
     return <div className="atelier">
-        <div className="announcement">Complimentary delivery on orders from 999.000₫ <span>•</span> Curated for your
-            everyday
+        <div className="announcement">AFFIHUB CURATES <span>•</span> We may earn a commission from partner links
         </div>
         <header className="site-header">
             <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}
                     aria-label="Open menu">{menuOpen ? '×' : '☰'}</button>
-            <a className="wordmark" href="#top">ÉLAN <small>ATELIER</small></a>
-            <nav className={menuOpen ? 'main-nav open' : 'main-nav'}><a href="#new">NEW IN</a><a href="#shop">SHOP</a><a
-                href="#edit">THE EDIT</a><a href="#about">OUR STORY</a></nav>
+            <a className="wordmark" href="#top">AFFI <small>HUB</small></a>
+            <nav className={menuOpen ? 'main-nav open' : 'main-nav'}><a href="#new">DISCOVER</a><a href="#shop">PICKS</a><a
+                href="#edit">GUIDES</a><a href="#about">ABOUT</a></nav>
             <div className="header-tools">
                 <button onClick={() => setSearchOpen(!searchOpen)} aria-label="Search">⌕</button>
-                <button aria-label="Account">♙</button>
-                <button aria-label="Shopping bag">BAG <sup>0</sup></button>
+                <a href="#about">ABOUT</a>
             </div>
         </header>
         {searchOpen &&
-            <div className="search-drawer"><label htmlFor="catalogue-search">Search the collection</label><input
+            <div className="search-drawer"><label htmlFor="catalogue-search">Search recommended products</label><input
                 id="catalogue-search" autoFocus value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)} placeholder="Try “linen dress”"/>
                 <button onClick={() => setSearchOpen(false)}>Close</button>
@@ -131,15 +130,14 @@ function App() {
         <main id="top">
             <section className="hero" id="new">
                 <div className="hero-content"><p className="overline">AUTUMN / WINTER 2026</p>
-                    <h1>Quietly<br/><em>confident.</em></h1><p>Thoughtful pieces for the rhythm of every day.</p><a
-                        href="#shop" className="button-link">EXPLORE THE COLLECTION <span>→</span></a></div>
-                <div className="hero-note"><span>01</span> The everyday uniform, elevated.</div>
+                    <h1>Find pieces<br/><em>worth knowing.</em></h1><p>Curated fashion finds, organised so you can make a confident choice faster.</p><a
+                        href="#shop" className="button-link">BROWSE OUR PICKS <span>→</span></a></div>
+                <div className="hero-note"><span>01</span> Curated links. Your choice.</div>
             </section>
 
             <section className="category-explorer" aria-labelledby="category-heading">
                 <div className="section-intro"><p className="overline">CURATED FOR YOU</p><h2
-                    id="category-heading">The <em>wardrobe</em><br/>starts here.</h2><p>Discover considered styles
-                    across the collection.</p></div>
+                    id="category-heading">Start with<br/><em>your style.</em></h2><p>Browse our fashion edit by category, then open a recommendation with a trusted partner.</p></div>
                 {loadingCategories && <p className="status">Đang tải danh mục…</p>}{categoriesError &&
                 <p className="status error">{categoriesError}</p>}
                 <div className="category-layout">
@@ -150,7 +148,7 @@ function App() {
                              alt=""/><span>{String(index + 1).padStart(2, '0')}</span><strong>{category.name}</strong><i>↗</i>
                     </button>)}</div>
                     <aside className="subcategory-panel"><p
-                        className="overline">SHOP {activeParent?.name?.toUpperCase()}</p>
+                        className="overline">EXPLORE {activeParent?.name?.toUpperCase()}</p>
                         <h3>{activeParent?.name ?? 'Collection'}</h3>
                         <div>{subcategories.map((category, index) => <button key={category.categoryId}
                                                                              onClick={() => chooseSubcategory(category.categoryId)}
@@ -164,34 +162,32 @@ function App() {
                 <div className="product-heading">
                     <div><p
                         className="overline">{activeParent?.name?.toUpperCase()} / {activeCategory?.name?.toUpperCase()}</p>
-                        <h2>{activeCategory?.name ?? 'Our collection'}</h2></div>
-                    <p>{visibleProducts.length} pieces</p></div>
-                {loadingProducts && <p className="status">Đang selecting pieces…</p>}{productsError &&
+                        <h2>{activeCategory?.name ?? 'Our picks'}</h2></div>
+                    <p>{visibleProducts.length} recommendations</p></div>
+                {loadingProducts && <p className="status">Đang tải gợi ý…</p>}{productsError &&
                 <p className="status error">{productsError}</p>}{!loadingProducts && !productsError && activeCategory && visibleProducts.length === 0 &&
                 <p className="status">Chưa có sản phẩm trong danh mục này.</p>}
                 <div className="product-grid">{visibleProducts.map((product) => <article className="product-card"
                                                                                          key={product.productId}><a
                     className="product-photo" href={product.affiliateLink} target="_blank"
-                    rel="noopener noreferrer"><img src={product.imageUrl || fallbackImage} alt={product.name}/><span>VIEW PIECE</span></a>
+                    rel="noopener noreferrer"><img src={product.imageUrl || fallbackImage} alt={product.name}/><span>XEM GỢI Ý</span></a>
                     <div className="product-copy">
                         <div><p>{activeCategory?.name}</p><h3>{product.name}</h3></div>
-                        <strong>{formatPrice(product.price)}</strong></div>
+                        <strong>{formatPrice(product.price)}</strong><a className="partner-link" href={product.affiliateLink}
+                        target="_blank" rel="noopener noreferrer">XEM TẠI ĐỐI TÁC →</a></div>
                 </article>)}</div>
             </section>
 
             <section className="journal" id="edit">
                 <div className="journal-image"/>
-                <div className="journal-copy"><p className="overline">THE SEASONAL EDIT</p><h2>Made to
-                    move<br/>with <em>you.</em></h2><p>A soft study in texture, proportion and the small details that
-                    make an outfit feel entirely your own.</p><a href="#shop">READ THE JOURNAL <span>→</span></a></div>
+                <div className="journal-copy"><p className="overline">HOW WE CURATE</p><h2>Less noise.<br/>Better <em>finds.</em></h2><p>AffiHub collects products worth considering, then sends you directly to the partner store to decide.</p><a href="#shop">EXPLORE RECOMMENDATIONS <span>→</span></a></div>
             </section>
-            <section className="about-strip" id="about"><span>ÉLAN ATELIER</span><p>Less, but better. A modern wardrobe
-                for a life well lived.</p><a href="#top">BACK TO TOP ↑</a></section>
+            <section className="about-strip" id="about"><span>AFFIHUB DISCLOSURE</span><p>We curate independently. Some outbound links are affiliate links and may earn us a commission.</p><a href="#top">BACK TO TOP ↑</a></section>
         </main>
-        <footer><a className="wordmark" href="#top">ÉLAN <small>ATELIER</small></a>
-            <div><a href="#top">Instagram</a><a href="#top">Contact</a><a href="#top">Shipping & returns</a></div>
-            <small>© 2026 ÉLAN ATELIER</small></footer>
-        <nav className="mobile-dock" aria-label="Quick navigation"><a href="#top"><span>⌂</span>Home</a><a href="#shop"><span>⌕</span>Shop</a><button onClick={() => setSearchOpen(true)}><span>⌗</span>Search</button><a href="#edit"><span>✦</span>Edit</a><button aria-label="Shopping bag"><span>▢</span>Bag</button></nav>
+        <footer><a className="wordmark" href="#top">AFFI <small>HUB</small></a>
+            <div><a href="#top">Instagram</a><a href="#top">Contact</a><a href="#about">Affiliate disclosure</a></div>
+            <small>© 2026 AFFIHUB</small></footer>
+        <nav className="mobile-dock" aria-label="Quick navigation"><a href="#top"><span>⌂</span>Home</a><a href="#shop"><span>⌕</span>Picks</a><button onClick={() => setSearchOpen(true)}><span>⌗</span>Find</button><a href="#edit"><span>✦</span>Guides</a><a href="#about"><span>i</span>About</a></nav>
     </div>
 }
 

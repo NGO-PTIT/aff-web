@@ -1,0 +1,21 @@
+.header-tools a {
+    color: var(--ink);
+    font: 10px 'DM Mono', monospace;
+    letter-spacing: .06em;
+    text-decoration: none;
+}
+
+.partner-link {
+    display: block;
+    margin-top: 13px;
+    color: var(--warm);
+    font: 9px 'DM Mono', monospace;
+    letter-spacing: .05em;
+    text-decoration: none;
+}
+
+.partner-link:hover { text-decoration: underline; }
+
+@media (max-width: 699px) {
+    .header-tools a { display: none; }
+}
